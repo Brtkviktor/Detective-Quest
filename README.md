@@ -1,97 +1,179 @@
-🕵️‍♂️ Detective Quest
-Bem-vindo ao Detective Quest, um jogo educativo desenvolvido em linguagem C com o objetivo de explorar estruturas de dados avancadas de forma pratica e divertida.
+# 🕵️ Detective Quest
 
-O projeto e dividido em tres niveis de dificuldade: Novato, Aventureiro e Mestre.
-Cada nivel introduz um novo conceito de estrutura de dados e aumenta a complexidade logica do programa.
+**Descrição:**
+Detective Quest é um projeto em linguagem C que combina estruturas de dados avançadas com uma narrativa investigativa.
+O jogador explora uma mansão misteriosa, coleta pistas e tenta descobrir o culpado, enquanto o programa utiliza **árvores binárias**, **árvores de busca (BST)**, **Tries** e **tabelas hash** para gerenciar o progresso do jogo.
 
-🧩 Objetivo Geral
-O jogador deve explorar uma mansao misteriosa, descobrindo pistas e suspeitos.
-Cada nivel aprimora o sistema de exploracao, armazenamento e busca de informacoes, usando diferentes estruturas de dados:
+---
 
-🌲 Nivel Novato → Arvore binaria
+## 📁 Estrutura do Projeto
 
-🌳 Nivel Aventureiro → Arvore binaria de busca (BST)
+```
+Detective_Quest/
+│
+├── src/
+│   ├── main.c           # Função principal e controle do fluxo do jogo
+│   ├── sala.c / sala.h  # Implementação da árvore binária (mapa da mansão)
+│   ├── bst.c / bst.h    # Implementação da árvore binária de busca (pistas)
+│   ├── trie.c / trie.h  # Implementação da Trie (normalização de palavras)
+│   ├── hash.c / hash.h  # Implementação da tabela hash (pistas x suspeitos)
+│   └── utils.c / utils.h# Funções auxiliares e manipulação de strings
+│
+├── Makefile             # Compilação automatizada
+├── README.md            # Documentação principal do projeto
+└── LICENSE              # Licença de uso (opcional)
+```
 
-🧮 Nivel Mestre → Tabela Hash integrada com BST
+---
 
-⚙️ Estrutura do Projeto
-Copiar código
-DetectiveQuest/
-├── nivel_novato
-├── nivel_aventureiro
-├── nivel_mestre
-└── README.md
-💡 Nivel Novato – Arvore Binaria
-Arquivo: nivel_novato.c
+## ⚙️ Requisitos
 
-Neste nivel, voce aprende a criar e percorrer uma arvore binaria que representa o mapa da mansao.
-O jogador inicia no Hall de Entrada e pode se mover entre as salas usando comandos simples.
+- Compilador compatível com **C99** ou superior (ex.: GCC ou Clang)
+- Sistema operacional: Linux, macOS ou Windows (com MinGW/Cygwin)
+- Make (opcional, para compilação automatizada)
 
-🔧 Conceitos aplicados
-Estrutura struct com ponteiros para a esquerda e direita.
+---
 
-Funcoes recursivas de exploracao.
+## 🧩 Compilação e Execução
 
-Alocacao dinamica com malloc e free.
+### Compilação manual:
+```bash
+gcc -std=c99 -Wall -Wextra src/*.c -o detective_quest
+```
 
-🎯 Objetivo
-Percorrer a mansao ate encontrar uma sala folha (sem caminhos).
+### Execução:
+```bash
+./detective_quest
+```
 
-🧠 Nivel Aventureiro – BST (Arvore Binaria de Busca)
-Arquivo: nivel_aventureiro.c
+### Usando Makefile:
+```bash
+make
+./detective_quest
+```
 
-Neste nivel, alem do mapa da mansao, algumas salas escondem pistas.
-Cada pista encontrada e inserida em uma BST (Binary Search Tree) e exibida em ordem alfabetica ao final.
+---
 
-🔧 Conceitos aplicados
-Arvore Binaria de Busca (BST).
+## 🎮 Níveis do Projeto
 
-Insercao e percorrimento em ordem (InOrder).
+### 🥉 Nível Novato — Árvores Binárias
 
-Uso de ponteiros e alocacao dinamica.
+**Objetivo:**
+Implementar o mapa da mansão usando uma **árvore binária**. Cada nó representa uma sala com uma pista.
 
-Pistas encontradas serao automaticamente armazenadas na BST.
+**Funcionalidades:**
+- Criar e exibir as salas da mansão.
+- Permitir que o jogador explore à esquerda (E) ou à direita (D).
+- Exibir o caminho percorrido.
 
-🎯 Objetivo
-Coletar e listar todas as pistas encontradas em ordem alfabetica.
+**Estrutura básica:**
+```c
+typedef struct Sala {
+    char nome[50];
+    char pista[100];
+    struct Sala *esquerda;
+    struct Sala *direita;
+} Sala;
+```
 
-🔐 Nivel Mestre – Tabela Hash + BST
-Arquivo: nivel_mestre.c
+---
 
-No nivel final, o jogador coleta pistas e descobre os suspeitos relacionados a cada uma.
-Cada pista e associada a um suspeito usando uma tabela hash, enquanto as pistas continuam organizadas em uma BST.
+### 🥈 Nível Aventureiro — Árvores de Busca (BST)
 
-🔧 Conceitos aplicados
-Tabela Hash com encadeamento (colisao).
+**Objetivo:**
+Utilizar uma **árvore binária de busca** para armazenar as pistas coletadas pelo jogador.
 
-Funcoes hash simples e ponderada.
+**Funcionalidades:**
+- Inserir automaticamente as pistas encontradas em ordem alfabética.
+- Exibir todas as pistas em **ordem crescente** no final da exploração.
 
-Integracao entre BST e Tabela Hash.
+**Funções principais:**
+```c
+BSTNode* inserirPista(BSTNode* raiz, char* pista);
+void exibirEmOrdem(BSTNode* raiz);
+```
 
-Busca rapida de informacoes (pista → suspeito).
+---
 
-Pistas encontradas serao automaticamente associadas a suspeitos.
+### 🥇 Nível Mestre — Hash Table + Trie
 
-Ao final, voce pode digitar o nome da pista para descobrir o suspeito correspondente:
+**Objetivo:**
+Integrar uma **tabela hash** que associa cada pista a um suspeito e uma **Trie** para normalizar e comparar palavras.
 
-text
-Copiar código
-> Pegadas de Lama
-Suspeito associado: Suspeito A
-🎯 Objetivo
-Encontrar pistas e relaciona-las aos suspeitos corretos atraves da tabela hash.
+**Funcionalidades:**
+- Normalizar palavras (sem acento, minúsculas, sem espaços).
+- Associar pistas a suspeitos via hash.
+- Permitir que o jogador acuse um suspeito.
+- Validar se há pelo menos **duas pistas** ligando o suspeito ao crime.
 
-🧮 Estruturas de Dados Implementadas
-Nivel	Estrutura	Funcionalidade Principal
-Novato	Arvore Binaria	Mapa da mansao
-Aventureiro	BST (Arvore Binaria de Busca)	Armazenar pistas em ordem
-Mestre	Tabela Hash + BST	Relacionar pistas e suspeitos
+**Funções principais:**
+```c
+void inserirNaHash(HashTable* h, char* pista, char* suspeito);
+char* buscarSuspeito(HashTable* h, char* pista);
+int verificarAcusacao(HashTable* h, BSTNode* pistas, char* acusado);
+```
 
-🧰 Tecnologias Utilizadas
-Linguagem C (puro)
+---
 
-Compilador GCC
+## 🧠 Conceitos Aplicados
 
-Estruturas de dados dinamicas
+- **Árvore Binária:** estrutura hierárquica usada para representar caminhos (salas).
+- **BST:** garante armazenamento ordenado e rápido acesso às pistas.
+- **Trie:** estrutura ideal para indexar e comparar palavras de forma eficiente.
+- **Tabela Hash:** associa pistas a suspeitos com busca de tempo constante.
 
-Programacao modular e documentada
+---
+
+## 🧪 Boas Práticas
+
+- Utilize `free()` para liberar toda a memória alocada dinamicamente.
+- Evite variáveis globais; prefira passar ponteiros entre funções.
+- Comente cada função explicando seu propósito e parâmetros.
+- Valide entradas de usuário (ex.: opções inválidas durante a exploração).
+
+---
+
+## 🧾 Exemplo de Execução
+
+```
+=== Detective Quest ===
+Você está na Sala Principal.
+Deseja ir para (E) esquerda, (D) direita ou (S) sair? E
+
+Você entrou na Biblioteca!
+Pista encontrada: “Luvas sujas de tinta”.
+
+Deseja continuar explorando? D
+Você entrou no Jardim!
+Pista encontrada: “Pegadas próximas à janela”.
+
+Pistas coletadas:
+- Luvas sujas de tinta
+- Pegadas próximas à janela
+
+Digite o nome do suspeito: Pintor
+O suspeito Pintor foi acusado!
+Verificando evidências...
+Resultado: Culpado! As pistas confirmam sua culpa.
+```
+
+---
+
+## 📘 Contribuição
+
+1. Faça um fork do repositório.
+2. Crie uma branch com o nome da feature:
+   ```bash
+   git checkout -b feature/nova-funcionalidade
+   ```
+3. Commit suas alterações com mensagens claras:
+   ```bash
+   git commit -m "Adiciona função de verificação de suspeito"
+   ```
+4. Envie sua branch:
+   ```bash
+   git push origin feature/nova-funcionalidade
+   ```
+5. Abra um Pull Request.
+
+---
